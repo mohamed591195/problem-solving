@@ -31,7 +31,8 @@ public:
         for (int L=0, R=0; R<s.size(); ++R) {
             maxf = max(maxf, ++freq[s[R]]);
 
-            while(R-L+1 - maxf > k){
+            while(R-L+1 - maxf > k){ // we don't update maxf here, we don't have to, the next (for) iteration
+                                    // it would be updated 
                 --freq[s[L++]];
             }
             maxWindow = max(maxWindow, R-L+1);
