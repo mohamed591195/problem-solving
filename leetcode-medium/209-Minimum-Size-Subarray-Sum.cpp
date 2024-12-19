@@ -23,8 +23,7 @@ public:
     int minSubArrayLen(int target, vector<int>& nums) {
         int minLen = INT_MAX, currSum = 0;
 
-        int L=0;
-        for (int R=0; R<nums.size(); ++R) {
+        for (int L=0, R=0; R<nums.size(); ++R) {
             currSum += nums[R];
 
             while (currSum >= target) {
