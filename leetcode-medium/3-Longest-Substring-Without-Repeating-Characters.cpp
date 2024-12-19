@@ -21,6 +21,7 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
+        // char or int works the same
         unordered_set<char> items;
         int maxLen = 0;
 
