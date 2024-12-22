@@ -1,24 +1,41 @@
+// class Solution {
+// public:
+//     int pivotIndex(vector<int>& nums) {
+//         if (nums.size() == 1) return 0; 
+//         vector<int> postfix = nums;
+
+//         for (int i = 1; i<nums.size(); ++i) {
+//             nums[i] += nums[i-1];
+//         }
+//         for (int i = nums.size()-2; i >= 0; --i){
+//             postfix[i] += postfix[i+1];
+
+//         }
+
+//         for (int i=0; i<nums.size(); ++i) {
+//             if (i && i<nums.size()-1) {
+//                 if (nums[i-1] == postfix[i+1]) return i;
+//                 continue;
+//             }
+//             else if (i && nums[i-1] == 0) return i;
+//             else if (i<nums.size()-1 && postfix[i+1] == 0) return i;
+//         }
+//         return -1;
+//     }
+// };
+
+// another nicer solution 
 class Solution {
 public:
     int pivotIndex(vector<int>& nums) {
-        int n = nums.size();
-        if (n == 1) return 0;
-        vector<int> postfix(n);
-        postfix[n-1] = nums[n-1];
+        int rightSum = accumulate(nums.begin(), nums.end(), 0);
+        int leftSum = 0;
 
-        while (--n){ // decrement done before evaluation, so n=1 is the last n value to enter the loop, not n=0 
-            postfix[n-1] = nums[n-1] + postfix[n]; 
+        for (int i=0; i<nums.size(); ++i) {
+            rightSum -= nums[i];
+            if (rightSum == leftSum) return i;
+            leftSum += nums[i];
         }
-        if (postfix[1] == 0) return 0;//first edge case
-
-        n = nums.size();
-        // overwrite nums to be prefix
-        for (int i=1; i<n; ++i){
-            if (i < n-1 && nums[i-1] == postfix[i+1]) return i;
-            nums[i] += nums[i-1];
-        }
-        if (nums[n-2] == 0) return n-1; //second edge case
-        
         return -1;
     }
 };
