@@ -40,8 +40,6 @@ public:
     }
 };
 
-
-
 class Solution {
 public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
@@ -49,6 +47,35 @@ public:
         for(const auto& edge: edges){
             if (!dsu.uniond(edge[0], edge[1])) return edge;
         }
+        return {};
+    }
+};
+
+
+///////////////////////////////////////////// DFS Solution /////////////////////////////////////////////////////
+class Solution {
+public:
+    bool DFSHelper(vector<vector<int>>& graph, int currNode, int parent, vector<bool>& visited){
+        visited[currNode] = true;
+        for (int& neighbor: graph[currNode]){
+            if (neighbor == parent) continue;
+            if (visited[neighbor]) return true;
+            if (DFSHelper(graph, neighbor, currNode, visited)) return true;
+        }
+        visited[currNode] = false;
+        return false;
+    }
+
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<bool> visited(edges.size()+1, false);
+        vector<vector<int>> graph(edges.size()+1);
+        
+        for(const auto& edge: edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+            if(DFSHelper(graph, edge[0], -1, visited)) return edge;
+        }
+
         return {};
     }
 };
